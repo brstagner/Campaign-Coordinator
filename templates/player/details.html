@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% block title %}Player Details{% endblock %}
+{%block body %}
+
+<style>div{display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px}</style>
+
+<a href="/user/{{ user }}">return to user detail</a>
+
+<div style=><h2>{{ player.name }}</h2><a href="/player/{{player.player_id}}/edit/player">edit</a></div>
+
+<div id="demo" style="display:flex; flex-direction:column"><b>DEMOGRAPHICS</b><a href="/player/{{player.player_id}}/edit/demo">edit</a>
+    <div style="display:flex; flex-direction:row;">
+        <div>Player Level: {{ demo.player_level }}<br>
+            -----<br>
+            XP: {{ demo.player_xp }}
+        </div>
+        <div>{{ demo.race }}<br>
+            -----<br>
+            {{ demo.subrace }}
+        </div>
+        <div>{{ demo.job }}<br>
+            -----<br>
+           {{ demo.subjob }}
+        </div>
+        <div>Age: {{ demo.age }} years</div>
+        <div>{{ demo.alignment }}</div>
+    </div>
+    <div style="display:flex; flex-direction:row;">{% for key, value in classes.items()%}{% if value !=0 %}<div>{{key}} level {{value}}</div>{% endif %}{% endfor %}</div>
+    <div>{{demo.notes}}</div>
+</div>
+
+<div id="vitals" style="display:flex; flex-direction:column"><b>VITALS</b><a href="/player/{{player.player_id}}/edit/vitals">edit</a>
+    <div style="display:flex; flex-direction:row;">
+        <div style="text-align:center">HP {{ vitals.hp }}/{{ vitals.max_hp }}</div>
+        <div style="text-align:center">HD: 
+        {% for hit_dice in hd %}
+            <div>{{ hit_dice[0] }} x {{ hit_dice[1] }}</div>
+        {% endfor %}
+        </div>
+        <div style="text-align:center">Conditions: 
+        {% for condition in conditions %}
+            <div>{{ condition }}</div>
+        {% endfor %}
+        </div>
+    </div>
+    <div>{{vitals.notes}}</div>
+</div>
+
+<div id="combat" style="display:flex; flex-direction:column"><b>COMBAT</b><a href="/player/{{player.player_id}}/edit/combat">edit</a>
+    <div style="text-align:center">Attacks: 
+        {% for attack in attacks %}
+            <div>{{ attack[0] }}: {{ attack[1] }} x {{ attack[2] }}</div>
+        {% endfor %}
+    </div>
+    <div style="display:flex; flex-direction:row;">
+        <div style="text-align:center">AC: {{ combat.ac }}</div>
+        <div style="text-align:center">Initiative: {{ combat.initiative }}</div>
+        <div style="text-align:center">Speed: {{ combat.speed }}</div>
+        <div style="text-align:center">Inspiration: {{ combat.inspiration }}</div>
+        {% if combat.max_ki !=0 %}
+        <div style="text-align:center">Ki: {{ combat.ki }} / {{ combat.max_ki }}</div>
+        {% endif %}
+    </div>
+    <div>{{combat.notes}}</div>
+</div>
+
+<div id="spells" style="display:flex; flex-direction:column;"><b>SPELLS</b><a href="/player/{{player.player_id}}/edit/spells">edit</a>
+    <div style="text-align:center; display:flex; flex-direction: row; flex-wrap: wrap;">Known Spells: 
+        {% for spell in known_spells %}
+            <div>{{ spell }}</div>
+        {% endfor %}
+    </div>
+    <div style="display:flex; flex-direction:row;">
+    {% for n in range(9) %}
+    {% if available_spells[n] %}
+    <div>
+        {% if n == 0 %}
+        Cantrips:
+        {% else %}
+        Level {{n}}:
+        {% endif %}
+        {% for spell in available_spells[n]%}
+        <div>
+            {{spell[0]}} x {{spell[1]}}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    </div>
+    <div>{{spells_notes}}</div>
+</div>
+
+<div id="ability" style="display:flex; flex-direction:column"><b>ABILITY SCORES</b><a href="/player/{{player.player_id}}/edit/ability">edit</a>
+    <div style="text-align:center; display:flex; flex-direction: row; flex-wrap: wrap;">
+    <div style="text-align:center">Strength: {{ ability.strength }}</div>
+    <div style="text-align:center">Dexterity: {{ ability.dexterity }}</div>
+    <div style="text-align:center">Constitution: {{ ability.constitution }}</div>
+    </div>
+    <div style="text-align:center; display:flex; flex-direction: row; flex-wrap: wrap;">
+    <div style="text-align:center">Intelligence: {{ ability.intelligence }}</div>
+    <div style="text-align:center">Wisdom: {{ ability.wisdom }}</div>
+    <div style="text-align:center">Charisma: {{ ability.charisma }}</div>
+    </div>
+    <div>{{ability.notes}}</div>
+</div>
+
+<div id="proficiencies" style="display:flex; flex-direction:column;"><b>PROFICIENCIES</b><a href="/player/{{player.player_id}}/edit/proficiency">edit</a>
+    <div style="display:flex; flex-direction: row; flex-wrap:wrap;">
+    {% if proficiencies[0] %}
+    <div style="text-align:center">Skills: 
+        {% for skill in proficiencies[0] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if proficiencies[1] %}
+    <div style="text-align:center">Weapons: 
+        {% for skill in proficiencies[1] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if proficiencies[2] %}
+    <div style="text-align:center">Armor: 
+        {% for skill in proficiencies[2] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if proficiencies[3] %}
+    <div style="text-align:center">Tools: 
+        {% for skill in proficiencies[3] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if proficiencies[4] %}
+    <div style="text-align:center">Languages: 
+        {% for skill in proficiencies[4] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if proficiencies[5] %}
+    <div style="text-align:center">Traits: 
+        {% for skill in proficiencies[5] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if proficiencies[6] %}
+    <div style="text-align:center">Features: 
+        {% for skill in proficiencies[6] %}
+        <div>
+            {{ skill }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+</div><div>{{proficiency.notes}}</div></div>
+
+<div id="items" style="display:flex; flex-direction:column;"><b>ITEMS</b><a href="/player/{{player.player_id}}/edit/items">edit</a>
+    <div style="display:flex; flex-direction: row; flex-wrap:wrap;">
+    {% if items[0] %}
+    <div style="text-align:center">Weapons: 
+        {% for item in items[0] %}
+        <div>
+            {{ item }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if items[1] %}
+    <div style="text-align:center">Armor: 
+        {% for item in items[1] %}
+        <div>
+            {{ item }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if items[2] %}
+    <div style="text-align:center">Tools: 
+        {% for item in items[2] %}
+        <div>
+            {{ item }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if items[3] %}
+    <div style="text-align:center">Wallet: 
+        {% for item in items[3] %}
+        <div>
+            {{ item[0] }} x {{ item[1] }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if items[4] %}
+    <div style="text-align:center">Other: 
+        {% for item in items[4] %}
+        <div>
+            {{ item[0] }} x {{ item[1] }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+<div>Encumbrance: {{ items_object.weight }}/{{ items_object.max_weight }}</div>
+<div>{{items_object.notes}}</div>
+
+</div>
+
+{% endblock %}

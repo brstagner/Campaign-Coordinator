@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Edit Proficiency{% endblock %}
+{%block body %}
+
+<h1>Edit Proficiency</h1>
+<a href="/player/{{player_id}}">return without changes</a>
+    <h5>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h5>
+
+<datalist id="skills_datalist"></datalist>
+<datalist id="weapons_datalist"></datalist>
+<datalist id="armor_datalist"></datalist>
+<datalist id="tools_datalist"></datalist>
+<datalist id="languages_datalist"></datalist>
+<datalist id="traits_datalist"></datalist>
+<datalist id="features_datalist"></datalist>
+
+<div id="inputs">
+<div id="skills_input" data-class="skill" data-list="skills_datalist">Skills<button class="add">Add</button>
+    {% for proficiency in proficiencies[0] %}
+    <div><input class="skill" list="skills_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+
+<div id="weapons_input" data-class="weapon" data-list="weapons_datalist">Weapons<button class="add">Add</button>
+    {% for proficiency in proficiencies[1] %}
+    <div><input class="weapon" list="weapons_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+
+<div id="armor_input" data-class="armor" data-list="armor_datalist">Armor<button class="add">Add</button>
+    {% for proficiency in proficiencies[2] %}
+    <div><input class="armor" list="armor_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+
+<div id="tools_input" data-class="tool" data-list="tools_datalist">Tools<button class="add">Add</button>
+    {% for proficiency in proficiencies[3] %}
+    <div><input class="tool" list="tools_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+
+<div id="languages_input" data-class="language" data-list="languages_datalist">Languages<button class="add">Add</button>
+    {% for proficiency in proficiencies[4] %}
+    <div><input class="language" list="languages_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+
+<div id="traits_input" data-class="trait" data-list="traits_datalist">Traits<button class="add">Add</button>
+    {% for proficiency in proficiencies[5] %}
+    <div><input class="trait" list="traits_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+
+<div id="features_input" data-class="feature" data-list="features_datalist">Features<button class="add">Add</button>
+    {% for proficiency in proficiencies[6] %}
+    <div><input class="features" list="features_datalist" value="{{proficiency}}"><button class="delete">Delete</button></div>
+    {% endfor %}
+</div>
+</div>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    {% if field.id == 'notes' %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% else %}
+        <p hidden>{{ field.label }}</p>
+        <p hidden>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% endif %}
+    {% endfor %}
+    
+    <button id="submit">Submit</button>
+</form>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/edit-proficiency.js"></script>
+{% endblock %}

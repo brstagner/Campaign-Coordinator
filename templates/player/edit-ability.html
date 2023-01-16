@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Edit Ability{% endblock %}
+{%block body %}
+
+<h1>Edit Ability</h1>
+<a href="/player/{{player_id}}">return without changes</a>
+    <h5>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h5>
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% endfor %}
+    <button>Submit</button>
+</form>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/edit-ability.js"></script>
+{% endblock %}

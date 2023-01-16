@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Player Details{% endblock %}
+{%block body %}
+
+<style>div{display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px}</style>
+
+<a href="/campaign/{{ campaign_id }}/party">return to campaign</a>
+
+<div style="text-align:center"><h2>{{ player.name }}</h2></div>
+
+<div id="player" style="display:flex; flex-direction:column"><b>DEMOGRAPHICS</b>
+    <div style="display:flex; flex-direction:row;">
+        <div>Player Level: {{ demo.player_level }}</div>
+        <div>{{ demo.race }}<br>
+            -----<br>
+            {{ demo.subrace }}
+        </div>
+        <div>{{ demo.job }}<br>
+            -----<br>
+           {{ demo.subjob }}
+        </div>
+        <div>Age: {{ demo.age }} years</div>
+    </div>
+    <div style="display:flex; flex-direction:row;">{% for key, value in classes.items()%}{% if value !=0 %}<div>{{key}} level {{value}}</div>{% endif %}{% endfor %}</div>
+</div>
+{% if player.public %}
+<div id="public">{{player.public}}</div>
+{% endif %}
+{% endblock %}

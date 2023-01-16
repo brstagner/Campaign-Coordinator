@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Edit Spells{% endblock %}
+{%block body %}
+
+<h1>Edit Spells</h1>
+<a href="/player/{{player_id}}">return without changes</a>
+    <h5>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h5>
+
+<div style="display:flex; flex-direction:column">
+<div id="known_input" style="display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px">Known Spells<button class="add">Add</button>
+    {% for spell in known_spells %}
+        <div>
+            <input class="known_input" value="{{ spell }}"><button class="delete">Delete</buton>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="prepared" style="display:flex; flex-direction:column">
+<div id="lv0_input" style="display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px">Cantrips<button class="add">Add</button>
+    {% for spell in available_spells[0] %}
+        <div>
+            <input class="lv0_name" value="{{ spell[0] }}"><input class="lv0_number" type="number" value="{{ spell[1] }}"><button class="delete">Delete</buton>
+        </div>
+    {% endfor %}
+</div>
+
+{% for i in range(1,9) %}
+
+    <div id="lv{{i}}_input" style="display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px">Level {{i}}<button class="add">Add</button>
+    {% for spell in available_spells[i] %}
+        <div>
+            <input class="lv{{i}}_name" value="{{ spell[0] }}"><input class="lv{{i}}_number" type="number" value="{{ spell[1] }}"><button class="delete">Delete</buton>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endfor %}
+</div>
+</div>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+
+    {% if field.id == 'notes' %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% else %}
+
+        <p hidden>{{ field.label }}</p>
+        <p hidden>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% endif %}
+    {% endfor %}
+    <button id="submit">Submit</button>
+</form>
+
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/edit-spells.js"></script>
+{% endblock %}

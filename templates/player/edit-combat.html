@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Edit Combat{% endblock %}
+{%block body %}
+
+<datalist id="weapons_datalist">
+    {% for weapon in weapons %}
+        <option>{{ weapon }}</option>
+    {% endfor %}
+</datalist>
+
+<h1>Edit Combat</h1>
+<a href="/player/{{player_id}}">return without changes</a>
+    <h5>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h5>
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div id="attacks_input">
+    <p><label>Attacks</label> <button class="add">Add</button></p>
+        {% for attack in attacks %}
+            <p><input class="weapons_input" value="{{ attack[0] }}" list="weapons_datalist">
+                <input class="dice_input" value="{{ attack[1] }}">
+                <input class="number_input" value="{{ attack[2] }}">
+                <button class="delete">Delete</button></p>
+        {% endfor %}
+    </div>
+
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        {% if field.id == 'attacks' %}
+        <p hidden>{{ field.label }}</p>
+        <p hidden>{{ field }}
+        </p>
+        {% else %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+        {% endif %}
+    {% endfor %}
+    <button id="submit">Submit</button>
+</form>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/edit-combat.js"></script>
+{% endblock %}

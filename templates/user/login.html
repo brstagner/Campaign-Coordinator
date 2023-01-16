@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}User Login{% endblock %}
+{%block body %}
+<h1>User Login</h1>
+    <h5>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h5>
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% endfor %}
+    <button>Submit</button>
+</form>
+<a href="/register">Not registered? Register here.</a>
+{% endblock %}

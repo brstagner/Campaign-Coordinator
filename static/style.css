@@ -1,0 +1,10 @@
+input:read-only {
+    border:0;}
+
+/* select:read-only {
+    border:0;} */
+
+div{
+    margin:5px;
+    padding:5px;
+}

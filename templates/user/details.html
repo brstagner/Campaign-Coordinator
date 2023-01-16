@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}User Details{% endblock %}
+{%block body %}
+
+<h5>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+</h5>
+
+<h1>User Details</h1>
+
+<h4>{{ username }}</h4>
+<p>{{ user.email }}</p>
+
+<h5>Players</h5>
+<a href="/player/create">Create a New Player</a>
+{% for player in players %}
+<p><a href="/player/{{player.player_id}}">{{ player.name }}</a></p>
+{% endfor %}
+<h5>Campaigns</h5>
+<a href="/{{username}}/campaign/create">Create a New Campaign</a>
+{% for campaign in campaigns %}
+<p><a href="/campaign/{{campaign.campaign_id}}">{{ campaign.name }}</a>(DM)</p>
+{% endfor %}
+{% for campaign in pc_campaigns %}
+<p><a href="/campaign/{{campaign.campaign_id}}/party">{{ campaign.name }}</a>(PC)</p>
+{% endfor %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Edit Campaign{% endblock %}
+{%block body %}
+
+<h5>
+    {% for message in get_flashed_messages() %}
+        {{ message }}
+    {% endfor %}
+</h5>
+
+<h1>Edit {{ campaign.name }}</h1>
+
+<a href="/campaign/{{ campaign.campaign_id }}">return without changes</a>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% endfor %}
+    <button id="submit">Submit</button>
+</form>
+
+{% endblock %}

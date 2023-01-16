@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Edit Items{% endblock %}
+{%block body %}
+
+<datalist id="weapons_datalist"></datalist>
+<datalist id="armor_datalist"></datalist>
+<datalist id="tools_datalist"></datalist>
+<datalist id="wallet_datalist">
+    <option value="Copper"></option>
+    <option value="Silver"></option>
+    <option value="Electrum"></option>
+    <option value="Gold"></option>
+</datalist>
+
+<h1>Edit Items</h1>
+<a href="/player/{{player_id}}">return without changes</a>
+    <h5>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </h5>
+
+<div id="inputs">
+<div id="weapons_input" data-class="weapon" data-list="weapons_datalist">Weapons<button class="add">Add</button>
+    {% for item in weapons %}
+        <div>
+            <input value="{{ item }}" list="weapons_datalist" class="weapon"><button class="delete">Delete</button>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="armor_input" data-class="armor" data-list="armor_datalist">Armor<button class="add">Add</button>
+    {% for item in armor %}
+        <div>
+            <input value="{{ item }}" list="armor_datalist" class="armor"><button class="delete">Delete</button>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="tools_input" data-class="tool" data-list="tools_datalist">Tools<button class="add">Add</button>
+    {% for item in tools %}
+        <div>
+            <input value="{{ item }}" list="tools_datalist" class="tool"><button class="delete">Delete</button>
+        </div>
+    {% endfor %}
+</div>
+</div>
+
+<div id="multi-inputs">
+<div id="wallet_input" data-name_class="wallet_name" data-number_class="wallet_number" data-list="wallet_datalist">Wallet<button class="add">Add</button>
+    {% for item in wallet %}
+        <div>
+            <input value="{{ item[0] }}" list="wallet_datalist" class="wallet_name">
+            <input type="number" value="{{ item[1] }}" class="wallet_number"><button class="delete">Delete</button>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="other_input" data-name_class="other_name" data-number_class="other_number" data-list="">Other<button class="add">Add</button>
+    {% for item in other %}
+        <div>
+            <input value="{{ item[0] }}" list="" class="other_name">
+            <input type="number" value="{{ item[1] }}" class="other_number"><button class="delete">Delete</button>
+        </div>
+    {% endfor %}
+</div>
+
+</div>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        {% if field.id == 'notes' or field.id == 'weight' or field.id == 'max_weight' %}
+        <p>{{ field.label }}</p>
+        <p>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% else %}
+        <p hidden>{{ field.label }}</p>
+        <p hidden>{{ field }}
+        {% for error in field.errors %}
+            {{ error }}
+        {% endfor %}
+        </p>
+    {% endif %}
+    {% endfor %}
+    <button id="submit">Submit</button>
+</form>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/edit-items.js"></script>
+{% endblock %}
