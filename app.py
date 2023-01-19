@@ -9,7 +9,7 @@ from forms.campaign_forms import CreateCampaign, EditCampaign
 
 app = Flask(__name__)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dnd'
-app.config['SQLALCHEMY_DATABASE_URL'] = 'postgresql://duaeaupoyiqfid:06c7f4ae696c879e7d4eb4f0f51ef25e8bc63651843db6823f5e7f1b035b81b7@ec2-52-86-56-90.compute-1.amazonaws.com:5432/das8ob84q7j3jt'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://duaeaupoyiqfid:06c7f4ae696c879e7d4eb4f0f51ef25e8bc63651843db6823f5e7f1b035b81b7@ec2-52-86-56-90.compute-1.amazonaws.com:5432/das8ob84q7j3jt'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
