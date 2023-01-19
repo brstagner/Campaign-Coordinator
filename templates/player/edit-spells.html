@@ -2,45 +2,64 @@
 {% block title %}Edit Spells{% endblock %}
 {%block body %}
 
+<datalist id="all-spells"></datalist>
+<datalist id="datalist0"></datalist>
+<datalist id="datalist1"></datalist>
+<datalist id="datalist2"></datalist>
+<datalist id="datalist3"></datalist>
+<datalist id="datalist4"></datalist>
+<datalist id="datalist5"></datalist>
+<datalist id="datalist6"></datalist>
+<datalist id="datalist7"></datalist>
+<datalist id="datalist8"></datalist>
+<datalist id="datalist9"></datalist>
+
+
+
 <h1>Edit Spells</h1>
 <a href="/player/{{player_id}}">return without changes</a>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
 
-<div style="display:flex; flex-direction:column">
-<div id="known_input" style="display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px">Known Spells<button class="add">Add</button>
+
+<div id="known_input" class="row">
+    <div>Known Spells<br>
+    <button class="add">Add</button>
+    </div>
     {% for spell in known_spells %}
         <div>
-            <input class="known_input" value="{{ spell }}"><button class="delete">Delete</buton>
+            <input class="known_input" list="all-spells" value="{{ spell }}"><button class="delete">Delete</buton>
         </div>
     {% endfor %}
 </div>
 
-<div id="prepared" style="display:flex; flex-direction:column">
-<div id="lv0_input" style="display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px">Cantrips<button class="add">Add</button>
+<div id="prepared" class="column">
+<div id="lv0_input" class="row">
+    <div>Cantrips<br>
+        <button class="add">Add</button>
+    </div>
     {% for spell in available_spells[0] %}
-        <div>
-            <input class="lv0_name" value="{{ spell[0] }}"><input class="lv0_number" type="number" value="{{ spell[1] }}"><button class="delete">Delete</buton>
+        <div class="column">
+            Spell name: <input class="lv0_name" list="datalist0" value="{{ spell[0] }}">
+            Number Prepared: <input class="lv0_number" type="number" value="{{ spell[1] }}">
+            <button class="delete">Delete</buton>
         </div>
     {% endfor %}
 </div>
 
 {% for i in range(1,9) %}
 
-    <div id="lv{{i}}_input" style="display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px">Level {{i}}<button class="add">Add</button>
+    <div id="lv{{i}}_input" class="row">
+        <div>Level {{i}}<button class="add">Add</button>
     {% for spell in available_spells[i] %}
-        <div>
-            <input class="lv{{i}}_name" value="{{ spell[0] }}"><input class="lv{{i}}_number" type="number" value="{{ spell[1] }}"><button class="delete">Delete</buton>
+        <div class="column">
+            <input class="lv{{i}}_name" list="datalist{{i}}" value="{{ spell[0] }}"><input class="lv{{i}}_number" type="number" value="{{ spell[1] }}"><button class="delete">Delete</buton>
         </div>
     {% endfor %}
+    </div>
     </div>
 
 {% endfor %}
 </div>
-</div>
+
 
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}

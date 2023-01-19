@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Display">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Text">
     <link rel="stylesheet" href="/static/style.css">
 
-    <a href="/logout">logout</a>
+<div class="nav-bar row">
+  <div id="title"><h3>Campaign Coordinator</h3></div>
+  <div id="logout">
+  <a class="navigate" href="/logout">logout</a>
+  </div>
+</div>
 
     <title>{% block title %}TITLE HERE{% endblock %}</title>
+
   </head>
+
   <body>
-    <div class="content">{% block body %}BODY HERE{% endblock %}</div>
+
+    {% for message in get_flashed_messages() %}
+      <h5 class="alert alert-warning" role="alert">
+        {{ message }}
+      </h5>
+    {% endfor %}
+
+    <div class="container-fluid">{% block body %}BODY HERE{% endblock %}</div>
+
   </body>
+
 </html>

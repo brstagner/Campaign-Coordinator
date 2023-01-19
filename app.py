@@ -20,14 +20,9 @@ app.app_context().push()
 
 connect_db(app)
 
-def create_test_app():
-    app = Flask(__name__)
-    app.config['TESTING'] = True
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///dnd_test"
-    # Dynamically bind SQLAlchemy to application
-    db.init_app(app)
-    app.app_context().push() # this does the binding
-    return app
+
+
+
 
 ### User Routes ###
 
@@ -210,10 +205,19 @@ def create():
             # Permit creation
 
             name = form.name.data
-            story = form.story.data
-            public = form.public.data
+            party_notes = form.party_notes.data
+            player_notes = form.player_notes.data
+            dm_notes = form.dm_notes.data
+            demo = form.demo.data
+            vitals = form.vitals.data
+            combat = form.combat.data
+            spells = form.spells.data
+            ability = form.ability.data
+            level = form.level.data
+            proficiency = form.proficiency.data
+            items = form.items.data
 
-            player = Player(user_id=user_id, name=name, campaign_id=campaign_id, story=story, public=public)
+            player = Player(user_id=user_id, name=name, campaign_id=campaign_id, party_notes=party_notes, player_notes=player_notes, dm_notes=dm_notes,demo=demo, vitals=vitals, combat=combat, spells=spells, ability=ability, level=level, proficiency=proficiency, items=items)
             db.session.add(player)
             db.session.commit()
 
@@ -254,7 +258,8 @@ def create():
             flash('Authentication failed, check password')
             return redirect(f'/player/create')
     else:
-        return render_template('player/create.html', form=form)
+        username = session['username']
+        return render_template('player/create.html', form=form, username=username)
 
 
 ### Player Edit Routes ###
@@ -287,8 +292,17 @@ def edit_player(player_id):
             # Permit edit
 
             player.name = form.name.data
-            player.story = form.story.data
-            player.public = form.public.data
+            player.party_notes = form.party_notes.data
+            player.player_notes = form.player_notes.data
+            player.dm_notes = form.dm_notes.data
+            player.demo = form.demo.data
+            player.vitals = form.vitals.data
+            player.combat = form.combat.data
+            player.spells = form.spells.data
+            player.ability = form.ability.data
+            player.level = form.level.data
+            player.proficiency = form.proficiency.data
+            player.items = form.items.data
 
             if campaign_id != None:
                 player.campaign_id = campaign_id
@@ -304,10 +318,19 @@ def edit_player(player_id):
             return redirect(f'/player/{player_id}/edit/player')
 
     else:
-        form.name.data = player.name
-        form.story.data = player.story
-        form.public.data = player.public
         form.campaign_id.data = player.campaign_id
+        form.name.data = player.name
+        form.party_notes.data = player.party_notes
+        form.player_notes.data = player.player_notes
+        form.dm_notes.data = player.dm_notes
+        form.demo.data = player.demo
+        form.vitals.data = player.vitals
+        form.combat.data = player.combat
+        form.spells.data = player.spells
+        form.ability.data = player.ability
+        form.level.data = player.level
+        form.proficiency.data = player.proficiency
+        form.items.data = player.items
 
         return render_template('/player/edit-player.html', form=form, player_id=player_id, player=player)
 
@@ -485,7 +508,9 @@ def edit_spells(player_id):
 
     form = EditSpells()
     spells = Spells.query.get(player_id)
-    known_spells = eval(spells.known)
+    known_spells = []
+    if spells.known:
+        known_spells = eval(spells.known)
     available = [spells.cantrips, spells.lv1, spells.lv2, spells.lv3, spells.lv4, spells.lv5, spells.lv6, spells.lv7, spells.lv8, spells.lv9]
 
     available_spells = []
@@ -678,22 +703,28 @@ def edit_items(player_id):
         return render_template('/player/edit-items.html', form=form, player_id=player_id, weapons=weapons, armor=armor, tools=tools, wallet=wallet, other=other)
 
 ### Player Routes ###
+
 @app.route('/player/<player_id>')
 def player_detail(player_id):
     """
     Verify logged-in user owns player
     Render player details page
     """
-    player = Player.query.get(player_id)
-    user_id = Player.query.get(player_id).user_id
-    user = User.query.get(user_id).username
 
-    if 'username' not in session or  user != session['username']:
+    player = Player.query.get(player_id)
+
+    if player == None:
         flash('Not authorized to view this player')
         return redirect('/')
+    
+    user_id = Player.query.get(player_id).user_id
+    user = User.query.get(user_id)
+    username = user.username
 
-    player = Player.query.get(player_id)
-
+    if 'username' not in session or username != session['username']:
+            flash('Not authorized to view this player')
+            return redirect('/')
+    
     demo = Demo.query.get(player_id)
 
     levels = Level.query.get(player_id)
@@ -744,7 +775,7 @@ def player_detail(player_id):
         else:
             items.append(())
 
-    return render_template('player/details.html', player=player, user=user, demo=demo, vitals=vitals, hd=hd, conditions=conditions, combat=combat, attacks=attacks, known_spells=known_spells, available_spells=available_spells, ability=ability, level=level, proficiencies=proficiencies,    items_object=items_object, items=items, spells=spells, proficiency=proficiency, classes=classes, spells_notes=spells_notes)
+    return render_template('player/details.html', player=player, username=username, user=user, demo=demo, vitals=vitals, hd=hd, conditions=conditions, combat=combat, attacks=attacks, known_spells=known_spells, available_spells=available_spells, ability=ability, level=level, proficiencies=proficiencies,    items_object=items_object, items=items, spells=spells, proficiency=proficiency, classes=classes, spells_notes=spells_notes)
 
 
 ### Campaign Routes ###
@@ -943,7 +974,57 @@ def party_player_view(campaign_id, player_id):
         flash("Player is not in this campaign's party")
         return redirect('/')
     
+    # levels = Level.query.get(player_id)
+    # classes = {'Barbarian': levels.Barbarian, 'Bard':levels.Bard, 'Cleric':levels.Cleric, 'Druid':levels.Druid, 'Fighter':levels.Fighter, 'Monk':levels.Monk, 'Paladin':levels.Paladin, 'Ranger':levels.Ranger, 'Rogue':levels.Rogue, 'Sorcerer':levels.Sorcerer, 'Warlock':levels.Warlock, 'Wizard':levels.Wizard}
+
+    demo = Demo.query.get(player_id)
+
     levels = Level.query.get(player_id)
     classes = {'Barbarian': levels.Barbarian, 'Bard':levels.Bard, 'Cleric':levels.Cleric, 'Druid':levels.Druid, 'Fighter':levels.Fighter, 'Monk':levels.Monk, 'Paladin':levels.Paladin, 'Ranger':levels.Ranger, 'Rogue':levels.Rogue, 'Sorcerer':levels.Sorcerer, 'Warlock':levels.Warlock, 'Wizard':levels.Wizard}
 
-    return render_template('/campaign/party_player_view.html', player=player, demo=demo, campaign_id=campaign_id, classes=classes)
+    vitals = Vitals.query.get(player_id)
+    hd = eval(vitals.hd)
+    conditions = eval(vitals.conditions)
+
+    combat = Combat.query.get(player_id)
+    attacks = eval(combat.attacks)
+
+    spells = Spells.query.get(player_id)
+    spells_notes = spells.notes
+
+    known_spells = []
+    if spells.known:
+        known_spells = eval(spells.known)
+    
+    available = [spells.cantrips, spells.lv1, spells.lv2, spells.lv3, spells.lv4, spells.lv5, spells.lv6, spells.lv7, spells.lv8, spells.lv9]
+
+    available_spells = []
+    for spells in available:
+        if spells:
+            available_spells.append(eval(spells))
+        else:
+            available_spells.append(())
+
+    ability = Ability.query.get(player_id)
+
+    level = Level.query.get(player_id)
+
+    proficiency = Proficiency.query.get(player_id)
+    proficiency_list = [proficiency.skills, proficiency.weapons, proficiency.armor, proficiency.tools, proficiency.languages, proficiency.traits, proficiency.features]
+    proficiencies = []
+    for prof in proficiency_list:
+        if prof:
+            proficiencies.append(eval(prof))
+        else:
+            proficiencies.append(())
+
+    items_object = Items.query.get(player_id)
+    items_list = [items_object.weapons, items_object.armor, items_object.tools, items_object.wallet, items_object.other]
+    items = []
+    for item in items_list:
+        if item:
+            items.append(eval(item))
+        else:
+            items.append(())
+
+    return render_template('/campaign/party_player_view.html', campaign=campaign, player=player, demo=demo, vitals=vitals, hd=hd, conditions=conditions, combat=combat, attacks=attacks, known_spells=known_spells, available_spells=available_spells, ability=ability, level=level, proficiencies=proficiencies, items_object=items_object, items=items, spells=spells, proficiency=proficiency, classes=classes, spells_notes=spells_notes)

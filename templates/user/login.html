@@ -2,11 +2,7 @@
 {% block title %}User Login{% endblock %}
 {%block body %}
 <h1>User Login</h1>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
+
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
     {% for field in form if field.widget.input_type != 'hidden' %}
@@ -19,5 +15,5 @@
     {% endfor %}
     <button>Submit</button>
 </form>
-<a href="/register">Not registered? Register here.</a>
+<a class="create" href="/register">Not registered? Register here.</a>
 {% endblock %}

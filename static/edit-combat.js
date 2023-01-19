@@ -3,29 +3,43 @@ const attacks_input = document.querySelector('#attacks_input');
 attacks_input.addEventListener('click', function (e) {
     e.preventDefault();
     if (e.target.classList.contains('delete')){
-        e.target.parentElement.remove();
+        e.target.parentElement.parentElement.remove();
     };
     if (e.target.classList.contains('add')) {
-        let new_attack = document.createElement('p');
-        attacks_input.append(new_attack);
+        let new_attack = document.createElement('div');
+        new_attack.classList.add('column');
+        attacks_div.append(new_attack);
+
+        let weapon_name = document.createElement('div');
+        weapon_name.append('Weapon name: ');
         let new_weapon_input = document.createElement('input');
         new_weapon_input.setAttribute('list', 'weapons_datalist');
         new_weapon_input.classList.add('weapons_input');
-        new_attack.append(new_weapon_input);
+        weapon_name.append(new_weapon_input);
+        new_attack.append(weapon_name);
 
+        let attack_dice = document.createElement('div');
+        attack_dice.append('Attack dice: ');
         let new_dice_input = document.createElement('input');
         new_dice_input.classList.add('dice_input');
-        new_attack.append(new_dice_input)
+        new_dice_input.setAttribute('list', 'dice_datalist');
+        attack_dice.append(new_dice_input);
+        new_attack.append(attack_dice);
 
+        let attack_number = document.createElement('div');
+        attack_number.append('Number of attacks: ');
         let new_number_input = document.createElement('input');
         new_number_input.classList.add('number_input');
         new_number_input.type = 'number';
-        new_attack.append(new_number_input);
+        attack_number.append(new_number_input);
+        new_attack.append(attack_number);
 
+        let button_div = document.createElement('div');
         let delete_button = document.createElement('button');
         delete_button.classList.add('delete');
         delete_button.innerText = 'Delete';
-        new_attack.append(delete_button);
+        button_div.append(delete_button);
+        new_attack.append(button_div);
     };
 });
 

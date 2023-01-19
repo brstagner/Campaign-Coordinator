@@ -1,12 +1,53 @@
 const known_input = document.querySelector('#known_input');
 const submit = document.querySelector('#submit');
+const body = document.querySelector('body');
+const allSpells = document.querySelector('#all-spells');
+
+// async function getAllSpells () {
+//     let response = await axios.get(`https://www.dnd5eapi.co/api/spells`);
+//     let spells = response.data.results;
+//     console.log(spells);
+//     let datalist = document.createElement('datalist');
+//     datalist.id = 'spells-datalist';
+//     for (let spell of spells) {
+//         let option = document.createElement('option');
+//         option.setAttribute('value', `${spell.name}`);
+//         option.innerText = `${spell.name}`;
+//         datalist.append(option);
+//     };
+//     body.append(datalist);
+// };
+
+// getAllSpells();
+
+async function getLevelSpells (level) {
+    let response = await axios.get(`https://www.dnd5eapi.co/api/spells?level=${level}`);
+    let spells = response.data.results;
+    // console.log(spells);
+    let datalist = document.querySelector(`#datalist${level}`);
+    // console.log(datalist);
+    for (let spell of spells) {
+        let option = document.createElement('option');
+        option.setAttribute('value', `${spell.name}`);
+        option.innerText = `${spell.name}`;
+        datalist.append(option);
+        let alloption = document.createElement('option');
+        alloption.setAttribute('value', `${spell.name}`);
+        alloption.innerText = `${spell.name}`;
+        allSpells.append(alloption);
+    };
+};
+
+for (let i = 0; i < 10; i++){
+    getLevelSpells(i);
+}
 
 submit.addEventListener('click', function (e) {
     // e.preventDefault();
 
     let known_list = [];
     let known_inputs = document.getElementsByClassName('known_input');
-    console.log(known_inputs);
+    // console.log(known_inputs);
     for (let spell of known_inputs) {
         known_list.push(spell.value)
     };
@@ -65,9 +106,14 @@ for (let i = 0; i < 10; i++){
             let new_spell = document.createElement('div');
             document.querySelector(`#lv${i}_input`).append(new_spell);
 
+            new_spell.append('Spell Name: ');
+
             let new_spell_name = document.createElement('input');
+            new_spell_name.setAttribute('list', `datalist${i}`)
             new_spell_name.classList.add(`lv${i}_name`);
             new_spell.append(new_spell_name);
+
+            new_spell.append('Number prepared: ');
 
             let new_spell_number = document.createElement('input');
             new_spell_number.classList.add(`lv${i}_number`);

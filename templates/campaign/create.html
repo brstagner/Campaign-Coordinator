@@ -4,11 +4,6 @@
 
 <h1>Create Campaign</h1>
 <a href="/user/{{username}}">return to user details</a>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
 
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}

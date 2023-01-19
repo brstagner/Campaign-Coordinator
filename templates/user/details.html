@@ -2,32 +2,26 @@
 {% block title %}User Details{% endblock %}
 {%block body %}
 
-<h5>
-    {% for message in get_flashed_messages() %}
-        {{ message }}
-    {% endfor %}
-</h5>
+<h2>{{ username }}</h2>
+<a class="edit" href="/user/{{username}}/edit">edit</a></div>
 
-<h1>User Details</h1>
+<div>
+<h4>Email:</h4>
+{{ user.email }}
 
-<h4>{{ username }}</h4>
-<p>{{ user.email }}</p>
-
-<h5>Players</h5>
-<a href="/player/create">Create a New Player</a>
+<h4>Players:</h4>
+<a class="create" href="/player/create">Create a New Player</a>
 {% for player in players %}
-<p><a href="/player/{{player.player_id}}">{{ player.name }}</a></p>
+<div><a href="/player/{{player.player_id}}">{{ player.name }}</a></div>
 {% endfor %}
-<h5>Campaigns</h5>
-<a href="/{{username}}/campaign/create">Create a New Campaign</a>
+<h4>Campaigns:</h4>
+<a class="create" href="/{{username}}/campaign/create">Create a New Campaign</a>
 {% for campaign in campaigns %}
-<p><a href="/campaign/{{campaign.campaign_id}}">{{ campaign.name }}</a>(DM)</p>
+<div><a href="/campaign/{{campaign.campaign_id}}">{{ campaign.name }}</a>(DM)</div>
 {% endfor %}
 {% for campaign in pc_campaigns %}
-<p><a href="/campaign/{{campaign.campaign_id}}/party">{{ campaign.name }}</a>(PC)</p>
+<div><a href="/campaign/{{campaign.campaign_id}}/party">{{ campaign.name }}</a>(PC)</div>
 {% endfor %}
-
-
-
+</div>
 
 {% endblock %}

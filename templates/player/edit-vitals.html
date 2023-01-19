@@ -2,36 +2,47 @@
 {% block title %}Edit Vitals{% endblock %}
 {%block body %}
 
+<datalist id="dice_datalist">
+    <option value="1d4"></option>
+    <option value="1d6"></option>
+    <option value="1d8"></option>
+    <option value="1d10"></option>
+    <option value="1d12"></option>
+    <option value="1d20"></option>
+</datalist>
+
 <h1>Edit Vitals</h1>
 <a href="/player/{{player_id}}">return without changes</a>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
 
+<div class="column">
 <form method="POST" novalidate>
 {{ form.hidden_tag() }}
 <p>{{ form.hp.label }}</p>
 <p>{{ form.hp }}</p>
 <p>{{ form.max_hp.label }}</p>
 <p>{{ form.max_hp }}</p>
+</div>
 
-<div id="hd_input">
-<p><label>HD</label> <button class="add">Add</button></p>
+<div class="column">
+<div id="hd_input" class="border">
+<p><label>Hit Dice</label> <button class="add">Add</button></p>
 {% for die in hd %}
-<p><input class="hd_number_input" type="number" value="{{ die[0] }}"><input class="hd_die_input" value="{{ die[1] }}"><button class="delete">Delete</button></p>
+<p>
+    Number of HD: <input class="hd_number_input" type="number" value="{{ die[0] }}">
+    Die type: <input class="hd_die_input" list="dice_datalist" value="{{ die[1] }}"><button class="delete">Delete</button>
+</p>
 {% endfor %}
 </div>
 
 <p hidden>FORM-{{ form.hd.label }}</p>
 <p hidden>{{ form.hd }}</p>
 
-<div id="conditions_input">
+<div id="conditions_input" class="border">
 <p><label>Conditions</label> <button class="add">Add</button></p>
 {% for condition in conditions %}
 <p><input class="conditions_input" value="{{ condition }}"><button class="delete">Delete</button></p>
 {% endfor %}
+</div>
 </div>
 
 <p hidden>FORM-{{ form.conditions.label }}</p>
@@ -42,6 +53,7 @@
 
 <button id="submit">Submit</button>
 </form>
+
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/static/edit-vitals.js"></script>

@@ -54,9 +54,12 @@ hd_input.addEventListener('click', function (e) {
         let new_hd_number_input = document.createElement('input');
         new_hd_number_input.classList.add('hd_number_input');
         new_hd_number_input.type = 'number';
+        new_hd.append('Number of HD: ');
         new_hd.append(new_hd_number_input);
         let new_hd_die_input = document.createElement('input');
         new_hd_die_input.classList.add('hd_die_input');
+        new_hd_die_input.setAttribute('list', 'dice_datalist');
+        new_hd.append(' Die type: ');
         new_hd.append(new_hd_die_input);
         let delete_button = document.createElement('button');
         delete_button.classList.add('delete');

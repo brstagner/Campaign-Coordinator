@@ -1,10 +1,134 @@
 input:read-only {
     border:0;}
 
-/* select:read-only {
-    border:0;} */
-
 div{
     margin:5px;
     padding:5px;
+    display:inline-flex;
+    flex-direction:column;
+    /* outline:0.01em solid black; */
+}
+
+.descriptive{
+    white-space: pre-wrap;
+    background-color:white;
+    color: black;
+    text-align: left;
+}
+
+.campaign-descriptive{
+    white-space: pre-wrap;
+    font-family: "Red Hat Text";
+    background-color: rgb(57, 57, 57);
+    text-align: left;
+}
+
+body{
+    background-color: rgb(57, 57, 57);
+    color: white;
+    font-family: "Red Hat Display";
+}
+
+h1, h2, h3, h4, h5{
+    /* text-decoration: underline; */
+    font-weight: bold;
+}
+
+.category{
+    background-color: darkgray;
+    color: black;
+}
+
+.collection{
+    background-color: lightgray;
+    color: black;
+    text-align: center;
+}
+
+.item{
+    background-color: white;
+    color:black;
+    /* border-radius: 8px; */
+    text-align: center;
+    width: fit-content;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    flex-wrap: wrap;
+    margin: 5px;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+a{
+    padding: 5px;
+    border-radius: 8px;
+    width: fit-content;
+    background-color: #bf9d54;
+    color: white;
+}
+
+input{
+    color: black;
+}
+
+textarea{
+    color:black;
+}
+
+.edit {
+    background-color: #377a65;
+    color: white;
+    
+}
+
+.navigate {
+    background-color: #bf9d54;
+    color: white;
+}
+
+.create {
+    background-color: #5d54bf;
+    color: white;
+}
+
+button{
+    font-weight: bold;
+    color: black;
+}
+
+.nav-bar{
+    background-color: #b13c1f;
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    /* justify-content: right; */
+    justify-content:stretch;
+    height: 60px;
+    
+}
+
+#title{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#logout{
+    /* display:flex;
+    align-content: stretch; */
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+.border{
+    outline:5px solid white;
+    margin: 20px;
 }

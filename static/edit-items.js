@@ -3,6 +3,7 @@
 const weapons_datalist = document.querySelector('#weapons_datalist');
 const armor_datalist = document.querySelector('#armor_datalist');
 const tools_datalist = document.querySelector('#tools_datalist');
+const walletDatalist = document.querySelector('#wallet_datalist');
 
 async function getEquipment (type, datalist) {
     let response = await axios.get(`https://www.dnd5eapi.co/api/equipment-categories/${type}`);
@@ -28,11 +29,11 @@ inputs.addEventListener('click', function (e) {
     };
     if (e.target.classList.contains('add')) {
         let new_item = document.createElement('div');
-        e.target.parentElement.append(new_item);
+        e.target.parentElement.parentElement.append(new_item);
 
         let new_item_name = document.createElement('input');
-        new_item_name.classList.add(`${e.target.parentElement.dataset.class}`);
-        new_item_name.setAttribute('list', `${e.target.parentElement.dataset.list}`);
+        new_item_name.classList.add(`${e.target.parentElement.parentElement.dataset.class}`);
+        new_item_name.setAttribute('list', `${e.target.parentElement.parentElement.dataset.list}`);
         new_item.append(new_item_name);
 
         let delete_button = document.createElement('button');
@@ -51,15 +52,19 @@ multi_inputs.addEventListener('click', function (e) {
     };
     if (e.target.classList.contains('add')) {
         let new_item = document.createElement('div');
-        e.target.parentElement.append(new_item);
+        e.target.parentElement.parentElement.append(new_item);
+
+        new_item.append(`${e.target.parentElement.parentElement.dataset.name_label}`);
 
         let new_item_name = document.createElement('input');
-        new_item_name.classList.add(`${e.target.parentElement.dataset.name_class}`);
-        new_item_name.setAttribute('list', `${e.target.parentElement.dataset.list}`);
+        new_item_name.classList.add(`${e.target.parentElement.parentElement.dataset.name_class}`);
+        new_item_name.setAttribute('list', `${e.target.parentElement.parentElement.dataset.list}`);
         new_item.append(new_item_name);
 
+        new_item.append('Number:')
+
         let new_item_number = document.createElement('input');
-        new_item_number.classList.add(`${e.target.parentElement.dataset.number_class}`);
+        new_item_number.classList.add(`${e.target.parentElement.parentElement.dataset.number_class}`);
         new_item_number.type = 'number';
         new_item.append(new_item_number);
 

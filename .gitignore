@@ -1,2 +1,4 @@
 venv/
 __pycache__/
+seed.py
+tests.py

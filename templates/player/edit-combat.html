@@ -8,24 +8,33 @@
     {% endfor %}
 </datalist>
 
+<datalist id="dice_datalist">
+    <option value="1d4"></option>
+    <option value="1d6"></option>
+    <option value="1d8"></option>
+    <option value="1d10"></option>
+    <option value="1d12"></option>
+    <option value="1d20"></option>
+</datalist>
+
 <h1>Edit Combat</h1>
 <a href="/player/{{player_id}}">return without changes</a>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
+
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
 
-    <div id="attacks_input">
-    <p><label>Attacks</label> <button class="add">Add</button></p>
+    <div id="attacks_input" class="column border">
+    <div class="row"><label>Attacks</label> <button class="add">Add</button></div>
+    <div id="attacks_div" class="row">
         {% for attack in attacks %}
-            <p><input class="weapons_input" value="{{ attack[0] }}" list="weapons_datalist">
-                <input class="dice_input" value="{{ attack[1] }}">
-                <input class="number_input" value="{{ attack[2] }}">
-                <button class="delete">Delete</button></p>
+            <div class="column">
+                <div>Weapon name: <input class="weapons_input" value="{{ attack[0] }}" list="weapons_datalist"></div>
+                <div>Attack dice: <input class="dice_input" list="dice_datalist" value="{{ attack[1] }}"></div>
+                <div>Number of attacks: <input class="number_input" type="number" value="{{ attack[2] }}"></div>
+                <div><button class="delete">Delete</button></div>
+            </div>
         {% endfor %}
+    </div>
     </div>
 
     {% for field in form if field.widget.input_type != 'hidden' %}

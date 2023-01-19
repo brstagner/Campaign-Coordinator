@@ -4,16 +4,13 @@
 
 <a href="/user/{{ dm }}">return to user detail</a>
 
-<h5>
-    {% for message in get_flashed_messages() %}
-        {{ message }}
-    {% endfor %}
-</h5>
-
-<h1>{{ campaign.name }}</h1><a href="/campaign/{{campaign.campaign_id}}/edit">edit</a>
+<h1>{{ campaign.name }}
+    
+</h1>
+<a class="edit" href="/campaign/{{campaign.campaign_id}}/edit">edit</a>
 
 {% if campaign.description %}
-<p style="white-space: pre-wrap; font-family:Arial, Helvetica, sans-serif">"{{ campaign.description }}"</p>
+<h4 class="campaign-descriptive">"{{ campaign.description }}"</h4>
 {% endif %}
 
 <h4>Dungeon Master</h4>

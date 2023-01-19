@@ -2,15 +2,9 @@
 {% block title %}Edit User Details{% endblock %}
 {%block body %}
 
-<h5>
-    {% for message in get_flashed_messages() %}
-        {{ message }}
-    {% endfor %}
-</h5>
-
 <h1>Edit Details for {{ user.username }}</h1>
 
-<a href="/user/{{ user.user_id }}">return without changes</a>
+<a href="/user/{{ user.username }}">return without changes</a>
 
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}

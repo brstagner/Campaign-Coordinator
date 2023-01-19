@@ -2,11 +2,7 @@
 {% block title %}Player Create{% endblock %}
 {%block body %}
 <h1>Player Create</h1>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
+<a href="/user/{{username}}">return to user details</a>
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
     {% for field in form if field.widget.input_type != 'hidden' %}

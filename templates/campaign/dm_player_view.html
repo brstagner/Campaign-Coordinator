@@ -2,232 +2,320 @@
 {% block title %}Player Details{% endblock %}
 {%block body %}
 
-<style>div{display:inline-flex; flex-direction:column; outline:0.01em solid black; padding:5px; margin:5px}</style>
-
 <a href="/campaign/{{ campaign.campaign_id }}">return to campaign</a>
 
-<div style="text-align:center"><h2>{{ player.name }}</h2></div>
-
-<div id="demo" style="display:flex; flex-direction:column"><b>DEMOGRAPHICS</b>
-    <div style="display:flex; flex-direction:row;">
-        <div>Player Level: {{ demo.player_level }}<br>
-            -----<br>
-            XP: {{ demo.player_xp }}
-        </div>
-        <div>{{ demo.race }}<br>
-            -----<br>
-            {{ demo.subrace }}
-        </div>
-        <div>{{ demo.job }}<br>
-            -----<br>
-           {{ demo.subjob }}
-        </div>
-        <div>Age: {{ demo.age }} years</div>
-        <div>{{ demo.alignment }}</div>
+<div class="row">
+    <div><h2>{{ player.name }}</h2></div>
+    {% if player.party_notes %}
+    <div class="category">
+        <button>Party Notes</button><div class="descriptive" hidden>{{ player.party_notes }}</div>
     </div>
-    <div style="display:flex; flex-direction:row;">{% for key, value in classes.items()%}{% if value !=0 %}<div>{{key}} level {{value}}</div>{% endif %}{% endfor %}</div>
-    <div>{{demo.notes}}</div>
-    <div><u>Player Backstory</u>{{ player.story }}</div>
-    <div><u>Player Public Info</u>{{ player.public }}</div>
+{% endif %}
+
+{% if player.dm_notes %}
+    <div class="category">
+        <button>DM Notes</button><div class="descriptive" hidden>{{ player.dm_notes }}</div>
+    </div>
+{% endif %}
 </div>
 
-<div id="vitals" style="display:flex; flex-direction:column"><b>VITALS</b>
-    <div style="display:flex; flex-direction:row;">
-        <div style="text-align:center">HP {{ vitals.hp }}/{{ vitals.max_hp }}</div>
-        <div style="text-align:center">HD: 
-        {% for hit_dice in hd %}
-            <div>{{ hit_dice[0] }} x {{ hit_dice[1] }}</div>
-        {% endfor %}
+<div id="demo" class="column category">
+    <button>DEMOGRAPHICS</button>
+    <div hidden>
+        <div class="row">
+            <div class="collection">
+                <div class="item">Player Level: {{ demo.player_level }}</div>
+                <div class="item">XP: {{ demo.player_xp }}</div>
+            </div>
+            <div class="collection">
+                <div class="item">{{ demo.race }}</div>
+                <div class="item">{{ demo.subrace }}</div>
+            </div>
+            <div class="collection">
+                <div class="item">{{ demo.job }}</div>
+                <div class="item">{{ demo.subjob }}</div>
+            </div>
+            <div class="collection">
+                <div class="item">Age: {{ demo.age }} years</div>
+            </div>
+            <div class="collection">
+                <div class="item">{{ demo.alignment }}</div>
+            </div>
         </div>
-        <div style="text-align:center">Conditions: 
-        {% for condition in conditions %}
-            <div>{{ condition }}</div>
-        {% endfor %}
+        <div class="collection row">
+            {% for key, value in classes.items()%}
+                {% if value !=0 %}
+                    <div class="item">{{key}} level {{value}}</div>
+                {% endif %}
+            {% endfor %}
         </div>
-    </div>
-    <div>{{vitals.notes}}</div>
-</div>
-
-<div id="combat" style="display:flex; flex-direction:column"><b>COMBAT</b>
-    <div style="text-align:center">Attacks: 
-        {% for attack in attacks %}
-            <div>{{ attack[0] }}: {{ attack[1] }} x {{ attack[2] }}</div>
-        {% endfor %}
-    </div>
-    <div style="display:flex; flex-direction:row;">
-        <div style="text-align:center">AC: {{ combat.ac }}</div>
-        <div style="text-align:center">Initiative: {{ combat.initiative }}</div>
-        <div style="text-align:center">Speed: {{ combat.speed }}</div>
-        <div style="text-align:center">Inspiration: {{ combat.inspiration }}</div>
-        {% if combat.max_ki !=0 %}
-        <div style="text-align:center">Ki: {{ combat.ki }} / {{ combat.max_ki }}</div>
+        {% if demo.notes %}
+        <div class="collection">
+            <div class="descriptive">{{demo.notes}}</div>
+        </div>
         {% endif %}
     </div>
-    <div>{{combat.notes}}</div>
 </div>
 
-<div id="spells" style="display:flex; flex-direction:column;"><b>SPELLS</b>
-    <div style="text-align:center; display:flex; flex-direction: row; flex-wrap: wrap;">Known Spells: 
-        {% for spell in known_spells %}
-            <div>{{ spell }}</div>
+<div id="vitals" class="column category"><button>VITALS</button>
+    <div hidden>
+    <div class="row">
+        <div class="collection">
+            HP:
+            <div class="item">
+            {{ vitals.hp }}/{{ vitals.max_hp }}
+            </div>
+        </div>
+
+        <div class="collection">
+            HD: 
+            {% for hit_dice in hd %}
+                <div class="item">{{ hit_dice[0] }} x {{ hit_dice[1] }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="collection">
+            Conditions: 
+            {% for condition in conditions %}
+                <div class="item">{{ condition }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if vitals.notes %}
+    <div class="collection">
+        <div class="descriptive">{{vitals.notes}}</div>
+    </div>
+    {% endif %}
+</div>
+</div>
+
+<div id="combat" class="column category"><button>COMBAT</button>
+    <div hidden>
+    <div class="collection">Attacks: 
+        {% for attack in attacks %}
+            <div class="item">{{ attack[0] }}: {{ attack[1] }} x {{ attack[2] }}</div>
         {% endfor %}
     </div>
-    <div style="display:flex; flex-direction:row;">
+    <div class="collection row">
+        <div class="item">AC: {{ combat.ac }}</div>
+        <div class="item">Initiative: {{ combat.initiative }}</div>
+        <div class="item">Speed: {{ combat.speed }}</div>
+        <div class="item">Inspiration: {{ combat.inspiration }}</div>
+        {% if combat.max_ki !=0 %}
+        <div class="item">Ki: {{ combat.ki }} / {{ combat.max_ki }}</div>
+        {% endif %}
+    </div>
+    {% if combat.notes %}
+    <div class="collection">
+        <div class="descriptive">{{combat.notes}}</div>
+    </div>
+    {% endif %}
+</div>
+</div>
+
+<div id="spells" class="column category"><button>SPELLS</button>
+    <div hidden>
+    <div class="collection">
+        <button>Known Spells</button>
+        <div hidden>
+        <div class="row">
+        {% for spell in known_spells %}
+            <div class="item">{{ spell }}</div>
+        {% endfor %}
+        </div>
+        </div>
+    </div>
+
+    <div class="collection" class="row">
     {% for n in range(9) %}
     {% if available_spells[n] %}
-    <div>
+    <div class="column">
         {% if n == 0 %}
-        Cantrips:
+        <button>Cantrips</button>
         {% else %}
-        Level {{n}}:
+        <button>Level {{n}}</button>
         {% endif %}
+        <div hidden>
         {% for spell in available_spells[n]%}
-        <div>
+        <div class="item">
             {{spell[0]}} x {{spell[1]}}
         </div>
         {% endfor %}
     </div>
+    </div>
     {% endif %}
     {% endfor %}
     </div>
-    <div>{{spells_notes}}</div>
+    {% if spells_notes %}
+    <div class="collection">
+        <div class="descriptive">{{spells_notes}}</div>
+    </div>
+    {% endif %}
+</div>
 </div>
 
-<div id="ability" style="display:flex; flex-direction:column"><b>ABILITY SCORES</b>
-    <div style="text-align:center; display:flex; flex-direction: row; flex-wrap: wrap;">
-    <div style="text-align:center">Strength: {{ ability.strength }}</div>
-    <div style="text-align:center">Dexterity: {{ ability.dexterity }}</div>
-    <div style="text-align:center">Constitution: {{ ability.constitution }}</div>
+<div id="ability" class="column category">
+    <button>ABILITY SCORES</button>
+    <div hidden>
+    <div class="collection">
+    <div class="row">
+    <div class="item">Strength: {{ ability.strength }}</div>
+    <div class="item">Dexterity: {{ ability.dexterity }}</div>
+    <div class="item">Constitution: {{ ability.constitution }}</div>
     </div>
-    <div style="text-align:center; display:flex; flex-direction: row; flex-wrap: wrap;">
-    <div style="text-align:center">Intelligence: {{ ability.intelligence }}</div>
-    <div style="text-align:center">Wisdom: {{ ability.wisdom }}</div>
-    <div style="text-align:center">Charisma: {{ ability.charisma }}</div>
+    <div class="row">
+    <div class="item">Intelligence: {{ ability.intelligence }}</div>
+    <div class="item">Wisdom: {{ ability.wisdom }}</div>
+    <div class="item">Charisma: {{ ability.charisma }}</div>
     </div>
-    <div>{{ability.notes}}</div>
+    </div>
+    {% if ability.notes %}
+    <div class="collection">
+        <div class="descriptive">{{ability.notes}}</div>
+    </div>
+    {% endif %}
+</div>
 </div>
 
-<div id="proficiencies" style="display:flex; flex-direction:column;"><b>PROFICIENCIES</b>
-    <div style="display:flex; flex-direction: row; flex-wrap:wrap;">
+<div id="proficiencies" class="column category">
+    <button>PROFICIENCIES</button>
+    <div hidden>
+    <div class="row">
     {% if proficiencies[0] %}
-    <div style="text-align:center">Skills: 
+    <div class="collection">Skills: 
         {% for skill in proficiencies[0] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if proficiencies[1] %}
-    <div style="text-align:center">Weapons: 
+    <div class="collection">Weapons: 
         {% for skill in proficiencies[1] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if proficiencies[2] %}
-    <div style="text-align:center">Armor: 
+    <div class="collection">Armor: 
         {% for skill in proficiencies[2] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if proficiencies[3] %}
-    <div style="text-align:center">Tools: 
+    <div class="collection">Tools: 
         {% for skill in proficiencies[3] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if proficiencies[4] %}
-    <div style="text-align:center">Languages: 
+    <div class="collection">Languages: 
         {% for skill in proficiencies[4] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if proficiencies[5] %}
-    <div style="text-align:center">Traits: 
+    <div class="collection">Traits: 
         {% for skill in proficiencies[5] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if proficiencies[6] %}
-    <div style="text-align:center">Features: 
+    <div class="collection">Features: 
         {% for skill in proficiencies[6] %}
-        <div>
+        <div class="item">
             {{ skill }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
+    </div>
     
-</div><div>{{proficiency.notes}}</div></div>
+    {% if proficiency.notes %}
+    <div class="collection">
+        <div class="descriptive">{{proficiency.notes}}</div>
+    </div>
+    {% endif %}
+</div>
+</div>
 
-<div id="items" style="display:flex; flex-direction:column;"><b>ITEMS</b>
-    <div style="display:flex; flex-direction: row; flex-wrap:wrap;">
+<div id="items" class="column category">
+    <button>ITEMS</button>
+    <div hidden>
+    <div class="row">
     {% if items[0] %}
-    <div style="text-align:center">Weapons: 
+    <div class="collection">Weapons: 
         {% for item in items[0] %}
-        <div>
+        <div class="item">
             {{ item }}
         </div>
         {% endfor %}
     </div>
+   
     {% endif %}
     {% if items[1] %}
-    <div style="text-align:center">Armor: 
+    <div class="collection">Armor: 
         {% for item in items[1] %}
-        <div>
+        <div class="item">
             {{ item }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if items[2] %}
-    <div style="text-align:center">Tools: 
+    <div class="collection">Tools: 
         {% for item in items[2] %}
-        <div>
+        <div class="item">
             {{ item }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if items[3] %}
-    <div style="text-align:center">Wallet: 
+    <div class="collection">Wallet: 
         {% for item in items[3] %}
-        <div>
+        <div class="item">
             {{ item[0] }} x {{ item[1] }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
     {% if items[4] %}
-    <div style="text-align:center">Other: 
+    <div class="collection">Other: 
         {% for item in items[4] %}
-        <div>
+        <div class="item">
             {{ item[0] }} x {{ item[1] }}
         </div>
         {% endfor %}
     </div>
     {% endif %}
+     </div>
 
+<div class="collection">
+    <div  class="item">Encumbrance: {{ items_object.weight }}/{{ items_object.max_weight }}</div>
+    </div>
+<div class="collection">
+<div class="descriptive">{{items_object.notes}}</div>
+</div>
+</div>
 </div>
 
-<div>Encumbrance: {{ items_object.weight }}/{{ items_object.max_weight }}</div>
-<div>{{items_object.notes}}</div>
 
-</div>
+<script src="/static/player-detail.js"></script>
 
 {% endblock %}

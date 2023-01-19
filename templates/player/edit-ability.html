@@ -4,11 +4,7 @@
 
 <h1>Edit Ability</h1>
 <a href="/player/{{player_id}}">return without changes</a>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
+
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
     {% for field in form if field.widget.input_type != 'hidden' %}

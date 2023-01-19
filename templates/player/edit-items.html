@@ -14,14 +14,10 @@
 
 <h1>Edit Items</h1>
 <a href="/player/{{player_id}}">return without changes</a>
-    <h5>
-        {% for message in get_flashed_messages() %}
-            {{ message }}
-        {% endfor %}
-    </h5>
 
 <div id="inputs">
-<div id="weapons_input" data-class="weapon" data-list="weapons_datalist">Weapons<button class="add">Add</button>
+<div id="weapons_input" class="row border" data-class="weapon" data-list="weapons_datalist">
+    <div>Weapons<button class="add">Add</button></div>
     {% for item in weapons %}
         <div>
             <input value="{{ item }}" list="weapons_datalist" class="weapon"><button class="delete">Delete</button>
@@ -29,7 +25,8 @@
     {% endfor %}
 </div>
 
-<div id="armor_input" data-class="armor" data-list="armor_datalist">Armor<button class="add">Add</button>
+<div id="armor_input" class="row border" data-class="armor" data-list="armor_datalist">
+    <div>Armor<button class="add">Add</button></div>
     {% for item in armor %}
         <div>
             <input value="{{ item }}" list="armor_datalist" class="armor"><button class="delete">Delete</button>
@@ -37,7 +34,8 @@
     {% endfor %}
 </div>
 
-<div id="tools_input" data-class="tool" data-list="tools_datalist">Tools<button class="add">Add</button>
+<div id="tools_input" class="row border" data-class="tool" data-list="tools_datalist">
+    <div>Tools<button class="add">Add</button></div>
     {% for item in tools %}
         <div>
             <input value="{{ item }}" list="tools_datalist" class="tool"><button class="delete">Delete</button>
@@ -47,20 +45,22 @@
 </div>
 
 <div id="multi-inputs">
-<div id="wallet_input" data-name_class="wallet_name" data-number_class="wallet_number" data-list="wallet_datalist">Wallet<button class="add">Add</button>
+<div id="wallet_input" class="row border" data-name_class="wallet_name" data-number_class="wallet_number" data-list="wallet_datalist" data-name_label="Denomination:">
+    <div>Wallet<button class="add">Add</button></div>
     {% for item in wallet %}
         <div>
-            <input value="{{ item[0] }}" list="wallet_datalist" class="wallet_name">
-            <input type="number" value="{{ item[1] }}" class="wallet_number"><button class="delete">Delete</button>
+            Denomination:<input value="{{ item[0] }}" list="wallet_datalist" class="wallet_name">
+            Number:<input type="number" value="{{ item[1] }}" class="wallet_number"><button class="delete">Delete</button>
         </div>
     {% endfor %}
 </div>
 
-<div id="other_input" data-name_class="other_name" data-number_class="other_number" data-list="">Other<button class="add">Add</button>
+<div id="other_input" class="row border" data-name_class="other_name" data-number_class="other_number" data-name_label="Item:">
+    <div>Other<button class="add">Add</button></div>
     {% for item in other %}
         <div>
-            <input value="{{ item[0] }}" list="" class="other_name">
-            <input type="number" value="{{ item[1] }}" class="other_number"><button class="delete">Delete</button>
+            Item:<input value="{{ item[0] }}" list="" class="other_name">
+            Number:<input type="number" value="{{ item[1] }}" class="other_number"><button class="delete">Delete</button>
         </div>
     {% endfor %}
 </div>
