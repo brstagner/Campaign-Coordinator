@@ -8,7 +8,8 @@ from forms.player_forms import PlayerCreate, EditPlayer, EditDemo, EditVitals, E
 from forms.campaign_forms import CreateCampaign, EditCampaign
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dnd'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dnd'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
@@ -19,10 +20,6 @@ bcrypt = Bcrypt()
 app.app_context().push()
 
 connect_db(app)
-
-
-
-
 
 ### User Routes ###
 
