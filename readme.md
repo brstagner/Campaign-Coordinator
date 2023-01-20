@@ -22,3 +22,9 @@ passwords for user accounts and for joining campaigns
 
 ## Functionality:
 App should permit creation and editing of player characters (PCs) and campaigns. App should collect players into a single campaign, run by a single user (the 'dungeon master' or 'DM'). DMs should get access to player information without ability to edit. Players should get access to all of their own data, plus select data from other players in the campaign, as permitted by those players.
+
+## This project was built using:
+- Flask
+- Bcrypt
+- SQLAlchemy
+- WTForms
