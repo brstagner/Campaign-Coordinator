@@ -7,19 +7,19 @@ from forms.user_forms import RegisterUser, LoginUser, EditUser
 from forms.player_forms import PlayerCreate, EditPlayer, EditDemo, EditVitals, EditCombat, EditSpells, EditAbility, EditProficiency, EditItems
 from forms.campaign_forms import CreateCampaign, EditCampaign
 
-# app = Flask(__name__)
-# # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dnd'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://duaeaupoyiqfid:06c7f4ae696c879e7d4eb4f0f51ef25e8bc63651843db6823f5e7f1b035b81b7@ec2-52-86-56-90.compute-1.amazonaws.com:5432/das8ob84q7j3jt'
-
-import os
-
-database_url = os.environ['DATABASE_URL']
-
-# fix incorrect database URIs currently returned by Heroku's pg setup
-database_url = database_url.replace('postgres://', 'postgresql://')
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///dnd'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://duaeaupoyiqfid:06c7f4ae696c879e7d4eb4f0f51ef25e8bc63651843db6823f5e7f1b035b81b7@ec2-52-86-56-90.compute-1.amazonaws.com:5432/das8ob84q7j3jt'
+
+# import os
+
+# database_url = os.environ['DATABASE_URL']
+
+# # fix incorrect database URIs currently returned by Heroku's pg setup
+# database_url = database_url.replace('postgres://', 'postgresql://')
+
+# app = Flask(__name__)
+# app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
