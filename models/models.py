@@ -57,16 +57,16 @@ class Vitals(db.Model):
     hp = db.Column(db.Integer)
     max_hp = db.Column(db.Integer)
     # hd, pool of hit dice ex. [(3, 1d8), (2, 1d6)]
-    hd = db.Column(db.VARCHAR)
+    hd = db.Column(db.String)
     # conditions ex. ['Paralyzed', 'Blind']
-    conditions = db.Column(db.VARCHAR)
+    conditions = db.Column(db.String)
     notes = db.Column(db.Text)
 
 class Combat(db.Model):
     __tablename__ = 'combat'
     player_id = db.Column(db.Integer, db.ForeignKey('players.player_id', ondelete='cascade'), primary_key=True, unique=True)
     # attacks: name, damage, number ex. [('Short Sword', '1d6', 2), ('Dragon Breath', '2d6', 1)]
-    attacks = db.Column(db.VARCHAR)
+    attacks = db.Column(db.String)
     ac = db.Column(db.Integer)
     initiative = db.Column(db.Integer)
     speed = db.Column(db.Integer)
@@ -79,18 +79,18 @@ class Spells(db.Model):
     __tablename__ = 'spells'
     player_id = db.Column(db.Integer, db.ForeignKey('players.player_id', ondelete='cascade'), primary_key=True, unique=True)
     # known ex. ['Magic Missile', 'Otto's Irresistible Dance']
-    known = db.Column(db.VARCHAR)
+    known = db.Column(db.String)
     # all below are prepared spells & #; cantrips ex. [('Magic Missile', 2), ('Light', 1)]
-    cantrips = db.Column(db.VARCHAR)
-    lv1 = db.Column(db.VARCHAR)
-    lv2 = db.Column(db.VARCHAR)
-    lv3 = db.Column(db.VARCHAR)
-    lv4 = db.Column(db.VARCHAR)
-    lv5 = db.Column(db.VARCHAR)
-    lv6 = db.Column(db.VARCHAR)
-    lv7 = db.Column(db.VARCHAR)
-    lv8 = db.Column(db.VARCHAR)
-    lv9 = db.Column(db.VARCHAR)
+    cantrips = db.Column(db.String)
+    lv1 = db.Column(db.String)
+    lv2 = db.Column(db.String)
+    lv3 = db.Column(db.String)
+    lv4 = db.Column(db.String)
+    lv5 = db.Column(db.String)
+    lv6 = db.Column(db.String)
+    lv7 = db.Column(db.String)
+    lv8 = db.Column(db.String)
+    lv9 = db.Column(db.String)
     notes = db.Column(db.Text)
 
 class Ability(db.Model):
@@ -151,13 +151,13 @@ class Proficiency(db.Model):
     player_id = db.Column(db.Integer, db.ForeignKey('players.player_id', ondelete='cascade'), primary_key=True, unique=True)
 
     # ex. ['Short Sword', 'Shield]
-    skills = db.Column(db.VARCHAR)
-    weapons = db.Column(db.VARCHAR)
-    armor = db.Column(db.VARCHAR)
-    tools = db.Column(db.VARCHAR)
-    languages = db.Column(db.VARCHAR)
-    traits = db.Column(db.VARCHAR)
-    features = db.Column(db.VARCHAR)
+    skills = db.Column(db.String)
+    weapons = db.Column(db.String)
+    armor = db.Column(db.String)
+    tools = db.Column(db.String)
+    languages = db.Column(db.String)
+    traits = db.Column(db.String)
+    features = db.Column(db.String)
     notes = db.Column(db.Text)
 
 class Items(db.Model):
@@ -165,11 +165,11 @@ class Items(db.Model):
 
     player_id = db.Column(db.Integer, db.ForeignKey('players.player_id', ondelete='cascade'), primary_key=True, unique=True)
 
-    weapons = db.Column(db.VARCHAR)
-    armor = db.Column(db.VARCHAR)
-    tools = db.Column(db.VARCHAR)
-    wallet = db.Column(db.VARCHAR)
-    other = db.Column(db.VARCHAR)
+    weapons = db.Column(db.String)
+    armor = db.Column(db.String)
+    tools = db.Column(db.String)
+    wallet = db.Column(db.String)
+    other = db.Column(db.String)
 
     weight = db.Column(db.Integer)
     max_weight = db.Column(db.Integer)
